@@ -49,6 +49,8 @@ public:
 
     void setBasemapStyle(const QString& basemapStyle);
 
+    Q_INVOKABLE bool addFeatureLayer(const QString& features);
+
 signals:
     void mapViewChanged();
 

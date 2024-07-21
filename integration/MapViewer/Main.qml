@@ -7,6 +7,7 @@ ApplicationWindow {
     height: 600
 
     MapViewComponent {
+        id: mapViewComponent
         anchors.fill: parent
     }
 }

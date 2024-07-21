@@ -129,3 +129,10 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
         }
     }
 }
+
+bool MapViewModel::addFeatureLayer(const QString& features)
+{
+    qWarning() << "Not implemented yet!";
+    qDebug() << features;
+    return false;
+}
