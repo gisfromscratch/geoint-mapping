@@ -24,3 +24,8 @@ geoint-mapping depends on the following software packages:
 - [ArcGIS Maps SDK for Qt - Version 200.2](https://developers.arcgis.com/qt/): ArcGIS Maps SDK for Qt has APIs for developing desktop apps for Windows, Linux, and macOS, and mobile apps for iOS and Android. You can install the API on Windows, macOS, or Linux.
 - [Qt SDK - Version 6.5.2](https://doc.qt.io/): The future is written with Qt, the cross-platform software development framework.
 - [pybind11](https://github.com/pybind/pybind11): Seamless operability between C++11 and Python.
+
+Setup development environment
+-----------------------------
+
+You need to setup a ready-to-use development environment using CMake configuring and compiling the C++ based coremapping module using pybind11. This module uses ArcGIS Maps SDK for Qt offering a map view component with a map view model. Every map view component offers a map view model which is accessible to Python using PySide6. So that you can easily create your own Qt Quick based Python desktop app with core mapping and GEOINT capabilities.
