@@ -14,7 +14,7 @@ print(os.environ["LD_LIBRARY_PATH"])
 # The current Python environment must match the target Python release of the native coremapping library
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
-from coremapping import initialize, BasemapStyle
+from coremapping import initialize
 
 
 if __name__ == "__main__":
@@ -22,8 +22,14 @@ if __name__ == "__main__":
     name = "Map Viewer example"
     QCoreApplication.setApplicationName(name)
 
-    initialize()
-    basemap_style = BasemapStyle.ArcGISImagery
+    # Validate if the arcgis_api_key environment variable exists
+    if not "arcgis_api_key" in os.environ:
+        raise ValueError("'arcgis_api_key' is not defined in the current environment!")
+    
+    # Initializes the ArcGIS Runtime core environment
+    # Also authenticate against ArcGIS Location Platform using an API Key
+    api_key = os.environ.get("arcgis_api_key")
+    initialize(api_key)
 
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("supportsSsl", QSslSocket.supportsSsl())

@@ -46,8 +46,33 @@ using namespace std;
 namespace py = pybind11;
 
 using namespace Esri::ArcGISRuntime;
+using namespace std;
 
-static void initialize()
+static void initializeLocationServicesFromEnvironment()
+{
+    QString apiKeyName = "arcgis_api_key";
+    QProcessEnvironment systemEnvironment = QProcessEnvironment::systemEnvironment();
+    if (systemEnvironment.contains(apiKeyName))
+    {
+        QString apiKey = systemEnvironment.value(apiKeyName);
+        if (apiKey.isEmpty())
+        {
+            qWarning() << "Use of Esri location services, including basemaps, requires" <<
+                "you to authenticate with an ArcGIS identity or set the API Key property.";
+            return;
+        }
+
+        ArcGISRuntimeEnvironment::setApiKey(apiKey);
+        qDebug() << "API key from the current environment was used to authenticate against the ArcGIS Location Platform services.";
+    }
+    else
+    {
+        qWarning() << "Use of Esri location services, including basemaps, requires" <<
+            "you to authenticate with an ArcGIS identity or set the API Key property.";
+    }
+}
+
+static void initialize(const string& apiKey = "")
 {
     // Use of Esri location services, including basemaps and geocoding, requires
     // either an ArcGIS identity or an API key. For more information see
@@ -59,23 +84,13 @@ static void initialize()
     // 2. API key: A permanent key that gives your application access to Esri
     // location services. Create a new API key or access existing API keys from
     // your ArcGIS for Developers dashboard (https://links.esri.com/arcgis-api-keys).
-
-    QString apiKey = QString("");
-    QString apiKeyName = "arcgis_api_key";
-    QProcessEnvironment systemEnvironment = QProcessEnvironment::systemEnvironment();
-    if (systemEnvironment.contains(apiKeyName))
+    if (apiKey.empty())
     {
-        apiKey = systemEnvironment.value(apiKeyName);
-    }
-    if (apiKey.isEmpty())
-    {
-        qWarning() << "Use of Esri location services, including basemaps, requires" <<
-            "you to authenticate with an ArcGIS identity or set the API Key property.";
+        initializeLocationServicesFromEnvironment();
     }
     else
     {
-        ArcGISRuntimeEnvironment::setApiKey(apiKey);
-        qDebug() << "API key from the current environment was used to authenticate against the ArcGIS Location Platform services.";
+        ArcGISRuntimeEnvironment::setApiKey(QString::fromStdString(apiKey));
     }
 
     // Production deployment of applications built with ArcGIS Maps SDK requires you to
@@ -97,7 +112,8 @@ static void initialize()
 PYBIND11_MODULE(coremapping, m) {
     m.doc() = "Offers access to ArcGIS Runtime Core mapping capabilities."; // optional module docstring
 
-    m.def("initialize", &initialize, "Initializes the underlying ArcGIS Runtime core environment.");
+    m.def("initialize", &initialize, "Initializes the underlying ArcGIS Runtime core environment.",
+          py::arg("apiKey") = py::none());
 
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
         .value("ArcGISImagery", BasemapStyle::ArcGISImagery);

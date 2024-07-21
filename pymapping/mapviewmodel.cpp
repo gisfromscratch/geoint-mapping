@@ -33,7 +33,7 @@ using namespace Esri::ArcGISRuntime;
 
 MapViewModel::MapViewModel(QObject* parent /* = nullptr */):
     QObject(parent),
-    m_map(new Map(BasemapStyle::ArcGISStreets, this))
+    m_map(new Map(BasemapStyle::OsmStandard, this))
 {
     // Instantiate
     qDebug() << "Map view model was instantiated.";
@@ -71,6 +71,51 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
         if ("ArcGISImagery" == basemapStyle)
         {
             newBasemapStyle = BasemapStyle::ArcGISImagery;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISLightGray" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISLightGray;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISDarkGray" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISDarkGray;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISNavigation" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISNavigation;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISStreets" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISStreets;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISTopographic" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISTopographic;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISOceans" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISOceans;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISTerrain" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISTerrain;
+            supportedBasemapStyle = true;
+        }
+        else if ("ArcGISCommunity" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISCommunity;
+            supportedBasemapStyle = true;
+        }
+        else if ("OsmStandard" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::OsmStandard;
             supportedBasemapStyle = true;
         }
 
