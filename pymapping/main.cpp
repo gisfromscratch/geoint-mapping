@@ -33,6 +33,7 @@ using namespace std;
 
 #include <ArcGISRuntimeEnvironment.h>
 #include <MapQuickView.h>
+#include <MapTypes.h>
 
 #include <QDir>
 #include <QGuiApplication>
@@ -86,6 +87,9 @@ static void initialize()
     // Register the map view for QML
     qmlRegisterType<MapQuickView>("Esri.Mapping", 1, 0, "MapView");
 
+    // Register the basemap style for QML
+    //qmlRegisterType<BasemapStyle>("Esri.Mapping", 1, 0, "BasemapStyle");
+
     // Register the TestMapApp (QQuickItem) for QML
     qmlRegisterType<MapViewModel>("Esri.Mapping", 1, 0, "MapViewModel");
 }
@@ -94,4 +98,7 @@ PYBIND11_MODULE(coremapping, m) {
     m.doc() = "Offers access to ArcGIS Runtime Core mapping capabilities."; // optional module docstring
 
     m.def("initialize", &initialize, "Initializes the underlying ArcGIS Runtime core environment.");
+
+    py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
+        .value("ArcGISImagery", BasemapStyle::ArcGISImagery);
 }

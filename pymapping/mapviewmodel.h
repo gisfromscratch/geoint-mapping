@@ -32,7 +32,7 @@ class Map;
 class MapQuickView;
 } // namespace Esri::ArcGISRuntime
 
-#include <QObject>
+#include <MapTypes.h>
 
 Q_MOC_INCLUDE("MapQuickView.h")
 
@@ -41,10 +41,13 @@ class MapViewModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView* mapView READ mapView WRITE setMapView NOTIFY mapViewChanged)
+    Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
 
 public:
     explicit MapViewModel(QObject* parent = nullptr);
     ~MapViewModel() override;
+
+    void setBasemapStyle(const QString& basemapStyle);
 
 signals:
     void mapViewChanged();

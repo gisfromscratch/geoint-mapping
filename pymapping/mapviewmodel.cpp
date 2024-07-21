@@ -24,6 +24,7 @@
 
 #include "mapviewmodel.h"
 
+#include <Basemap.h>
 #include <Map.h>
 #include <MapTypes.h>
 #include <MapQuickView.h>
@@ -61,3 +62,25 @@ void MapViewModel::setMapView(MapQuickView* mapView)
     emit mapViewChanged();
 }
 
+void MapViewModel::setBasemapStyle(const QString& basemapStyle)
+{
+    if (m_map)
+    {
+        BasemapStyle newBasemapStyle;
+        bool supportedBasemapStyle = false;
+        if ("ArcGISImagery" == basemapStyle)
+        {
+            newBasemapStyle = BasemapStyle::ArcGISImagery;
+            supportedBasemapStyle = true;
+        }
+
+        if (supportedBasemapStyle)
+        {
+            m_map->setBasemap(new Basemap(newBasemapStyle, this));
+        }
+        else
+        {
+            qWarning() << basemapStyle << "is not a supported basemap style!";
+        }
+    }
+}

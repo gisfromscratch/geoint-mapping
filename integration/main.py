@@ -14,7 +14,7 @@ print(os.environ["LD_LIBRARY_PATH"])
 # The current Python environment must match the target Python release of the native coremapping library
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
-from coremapping import initialize
+from coremapping import initialize, BasemapStyle
 
 
 if __name__ == "__main__":
@@ -23,6 +23,7 @@ if __name__ == "__main__":
     QCoreApplication.setApplicationName(name)
 
     initialize()
+    basemap_style = BasemapStyle.ArcGISImagery
 
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("supportsSsl", QSslSocket.supportsSsl())
