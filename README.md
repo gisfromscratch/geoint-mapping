@@ -15,3 +15,12 @@ Why is it important?
 --------------------
 
 Geospatial Knowledge refers to semantic information about specific locations on the Earth’s surface. It includes location-enabled things - not strings - like physical features of the landscape, the location of cities or in general human activities, and their spatial distribution. Various sources like satellite imagery, location-enabled datasets, and most important any location-enabled information in the context of Open Source Intelligence (OSINT) are used to create Geospatial Knowledge. By analyzing location-enabled things an analyst is empowered to gain insights into various aspects of human activities.
+
+Software Requirements
+---------------------
+
+geoint-mapping depends on the following software packages:
+
+- [ArcGIS Maps SDK for Qt - Version 200.2](https://developers.arcgis.com/qt/): ArcGIS Maps SDK for Qt has APIs for developing desktop apps for Windows, Linux, and macOS, and mobile apps for iOS and Android. You can install the API on Windows, macOS, or Linux.
+- [Qt SDK - Version 6.5.2](https://doc.qt.io/): The future is written with Qt, the cross-platform software development framework.
+- [pybind11](https://github.com/pybind/pybind11): Seamless operability between C++11 and Python.
