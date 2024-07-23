@@ -16,6 +16,6 @@ Item {
     MapViewModel {
         id: model
         mapView: view
-        basemapStyle: "OSMStandard"
+        basemapStyle: "OsmStandard"
     }
 }
