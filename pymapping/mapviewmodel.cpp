@@ -24,10 +24,15 @@
 
 #include "mapviewmodel.h"
 
+#include <QJsonDocument>
+
 #include <Basemap.h>
+#include <GraphicsOverlayListModel.h>
 #include <Map.h>
 #include <MapTypes.h>
 #include <MapQuickView.h>
+
+#include "SimpleGeoJsonLayer.h"
 
 using namespace Esri::ArcGISRuntime;
 
@@ -132,7 +137,19 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
 
 bool MapViewModel::addFeatureLayer(const QString& features)
 {
-    qWarning() << "Not implemented yet!";
-    qDebug() << features;
-    return false;
+    qDebug() << "Try to add GeoJSON features as feature layers...";
+    //qDebug() << features;
+
+    SimpleGeoJsonLayer* geojsonLayer = new SimpleGeoJsonLayer(this);
+    QJsonDocument geojsonDocument = QJsonDocument::fromJson(features.toUtf8());
+    geojsonLayer->load(geojsonDocument);
+
+    // Add the GeoJSON layer
+    GraphicsOverlay* geoJsonPointsOverlay = geojsonLayer->pointsOverlay();
+    m_mapView->graphicsOverlays()->append(geoJsonPointsOverlay);
+    GraphicsOverlay* geoJsonLinesOverlay = geojsonLayer->linesOverlay();
+    m_mapView->graphicsOverlays()->append(geoJsonLinesOverlay);
+    GraphicsOverlay* geoJsonAreasOverlay = geojsonLayer->areasOverlay();
+    m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
+    return true;
 }

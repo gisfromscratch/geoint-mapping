@@ -31,6 +31,10 @@ pybind11_add_module (
     main.cpp
     mapviewmodel.h
     mapviewmodel.cpp
+    SimpleGeoJsonLayer.h
+    SimpleGeoJsonLayer.cpp
+    GraphicsFactory.h
+    GraphicsFactory.cpp
 )
 
 # Copy required dynamic libraries to the build folder as a post-build step.
