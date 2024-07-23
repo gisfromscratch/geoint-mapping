@@ -49,7 +49,7 @@ public:
 
     void setBasemapStyle(const QString& basemapStyle);
 
-    Q_INVOKABLE bool addFeatureLayer(const QString& features);
+    Q_INVOKABLE bool addGeoJsonFeatures(const QString& features);
 
 signals:
     void mapViewChanged();

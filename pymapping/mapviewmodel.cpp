@@ -135,7 +135,7 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
     }
 }
 
-bool MapViewModel::addFeatureLayer(const QString& features)
+bool MapViewModel::addGeoJsonFeatures(const QString& features)
 {
     qDebug() << "Try to add GeoJSON features as feature layers...";
     //qDebug() << features;
