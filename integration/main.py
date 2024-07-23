@@ -90,6 +90,7 @@ if __name__ == "__main__":
             { "type": "Feature", "properties": { "description": "" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 12.238985892297936, 51.848000203064764 ], [ 12.232171917475972, 51.846282075700202 ], [ 12.235370313820976, 51.842931538703837 ], [ 12.237734345902064, 51.844048412078763 ], [ 12.238985892297936, 51.848000203064764 ] ] ] ] } }
         ]
     }
+
     succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonFeatures",
         Qt.DirectConnection,
         Q_RETURN_ARG(bool),
