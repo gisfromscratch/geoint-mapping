@@ -24,15 +24,27 @@
 
 #include "MapViewModel.h"
 
+#include <algorithm>
+
 #include <QJsonDocument>
 
 #include <Basemap.h>
+#include <FeatureCollection.h>
+#include <FeatureCollectionLayer.h>
+#include <FeatureCollectionTable.h>
+#include <FeatureCollectionTableListModel.h>
+#include <Field.h>
+#include <GeometryTypes.h>
+#include <Graphic.h>
+#include <GraphicListModel.h>
 #include <GraphicsOverlay.h>
 #include <GraphicsOverlayListModel.h>
+#include <LayerListModel.h>
 #include <Map.h>
 #include <MapQuickView.h>
 #include <MapTypes.h>
 #include <Renderer.h>
+#include <SpatialReference.h>
 
 #include "SimpleGeoJsonLayer.h"
 
@@ -192,5 +204,21 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
     geoJsonAreasOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
+
+    /*
+    GraphicListModel* graphics = geoJsonAreasOverlay->graphics();
+    QList<GeoElement*> graphicsList;
+    graphicsList.reserve(graphics->size());
+    std::for_each(graphics->begin(), graphics->end(), [&graphicsList](Graphic* graphic)
+    {
+        graphicsList.append(static_cast<GeoElement*>(graphic));
+    });
+    FeatureCollectionTable* geojsonFeatureCollectionTable = new FeatureCollectionTable(graphicsList, QList<Field>(), this);
+    geojsonFeatureCollectionTable->setRenderer(geoJsonRenderer);
+    FeatureCollection* geojsonFeatureCollection = new FeatureCollection(this);
+    geojsonFeatureCollection->tables()->append(geojsonFeatureCollectionTable);
+    FeatureCollectionLayer* geojsonFeatureCollectionLayer = new FeatureCollectionLayer(geojsonFeatureCollection, this);
+    m_map->operationalLayers()->append(geojsonFeatureCollectionLayer);
+    */
     return true;
 }

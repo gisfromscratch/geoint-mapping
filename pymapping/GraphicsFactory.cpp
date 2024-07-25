@@ -105,6 +105,14 @@ bool GraphicsFactory::createGraphics(const QJsonArray &featuresArray,
                     else if (0 == QString::compare("Polygon", geometryType))
                     {
                         Polygon polygon = createPolygon(coordinatesArray);
+                        if (!polygon.isValid())
+                        {
+                            qWarning() << "Polygon not valid!";
+                        }
+                        else if (polygon.isEmpty())
+                        {
+                            qWarning() << "Polygon is empty!";
+                        }
                         Graphic* geojsonGraphic = new Graphic(polygon, propertyMap, this);
                         areasOverlay->graphics()->append(geojsonGraphic);
                         added = true;

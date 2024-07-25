@@ -116,7 +116,7 @@ PYBIND11_MODULE(coremapping, m) {
           py::arg("apiKey") = py::none());
 
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
-        .value("ArcGISImagery", BasemapStyle::ArcGISImagery);
+        .value("ArcGISImagery", BasemapStyle::ArcGISImagery);    
 
     py::class_<MapViewModel>(m, "MapViewModel")
         .def("addGeoJsonFeatures", &MapViewModel::addGeoJsonFeatures, py::arg("features"))
