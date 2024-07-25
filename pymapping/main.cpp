@@ -117,4 +117,10 @@ PYBIND11_MODULE(coremapping, m) {
 
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
         .value("ArcGISImagery", BasemapStyle::ArcGISImagery);
+
+    py::class_<MapViewModel>(m, "MapViewModel")
+        .def("addGeoJsonFeatures", &MapViewModel::addGeoJsonFeatures, py::arg("features"))
+        .def("addGeoJsonPointFeatures", &MapViewModel::addGeoJsonPointFeatures, py::arg("features"), py::arg("renderer"))
+        .def("addGeoJsonLineFeatures", &MapViewModel::addGeoJsonLineFeatures, py::arg("features"), py::arg("renderer"))
+        .def("addGeoJsonPolygonFeatures", &MapViewModel::addGeoJsonPolygonFeatures, py::arg("features"), py::arg("renderer"));
 }

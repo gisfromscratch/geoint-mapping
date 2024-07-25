@@ -16,10 +16,10 @@ print(os.environ["LD_LIBRARY_PATH"])
 # The current Python environment must match the target Python release of the native coremapping library
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
-from coremapping import initialize
+from coremapping import initialize, MapViewModel
 
 
-def find_mapview_model(window):
+def find_mapview_model(window) -> MapViewModel:
     window_children = window.findChildren(QObject)
     for window_child in window_children:
         if "MapViewModel" == window_child.metaObject().className():
@@ -102,12 +102,16 @@ if __name__ == "__main__":
             'style': 'esriSLSSolid',
             'color': [110, 110, 110, 255],
             'width': 1}}}
+    
+    mapview_model.addGeoJsonPolygonFeatures(json.dumps(features), json.dumps(renderer))
 
+    """
     succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonPolygonFeatures",
         Qt.DirectConnection,
         Q_RETURN_ARG(bool),
         Q_ARG(str, json.dumps(features)),
         Q_ARG(str, json.dumps(renderer)))
+    """
 
     ex = application.exec()
     del engine
