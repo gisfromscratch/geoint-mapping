@@ -34,6 +34,7 @@ using namespace std;
 #include <ArcGISRuntimeEnvironment.h>
 #include <MapQuickView.h>
 #include <MapTypes.h>
+#include <Point.h>
 
 #include <QDir>
 #include <QGuiApplication>
@@ -105,8 +106,11 @@ static void initialize(const string& apiKey = "")
     // Register the basemap style for QML
     //qmlRegisterType<BasemapStyle>("Esri.Mapping", 1, 0, "BasemapStyle");
 
-    // Register the TestMapApp (QQuickItem) for QML
+    // Register the MapViewModel (QQuickItem) for QML
     qmlRegisterType<MapViewModel>("Esri.Mapping", 1, 0, "MapViewModel");
+
+    // Register the core types
+    //qmlRegisterType<Point>("Esri.ArcGISRuntime", 1, 0, "Point");
 }
 
 PYBIND11_MODULE(coremapping, m) {

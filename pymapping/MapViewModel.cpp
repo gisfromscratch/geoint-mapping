@@ -71,9 +71,16 @@ void MapViewModel::setMapView(MapQuickView *mapView)
         return;
     }
 
+    if (m_mapView)
+    {
+        disconnect(m_mapView, &MapQuickView::mouseClicked, this, &MapViewModel::onMouseClicked);
+    }
+
     m_mapView = mapView;
     m_mapView->setMap(m_map);
     qDebug() << "Map view model was updated with a new map view";
+
+    connect(m_mapView, &MapQuickView::mouseClicked, this, &MapViewModel::onMouseClicked);
 
     emit mapViewChanged();
 }
@@ -221,4 +228,17 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     m_map->operationalLayers()->append(geojsonFeatureCollectionLayer);
     */
     return true;
+}
+
+void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    // Emit the clicked location
+    QPointF screenPosition = mouseEvent.position();
+    Point mapClickLocation = m_mapView->screenToLocation(screenPosition.x(), screenPosition.y());
+    emit mapViewClicked(mapClickLocation.toJson());
 }

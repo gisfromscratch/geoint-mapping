@@ -17,6 +17,7 @@ print(os.environ["LD_LIBRARY_PATH"])
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
 from coremapping import initialize, MapViewModel
+import slots
 
 
 def find_mapview_model(window) -> MapViewModel:

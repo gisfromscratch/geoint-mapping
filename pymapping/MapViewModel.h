@@ -31,6 +31,9 @@ class MapQuickView;
 } // namespace Esri::ArcGISRuntime
 
 #include <QObject>
+#include <QMouseEvent>
+
+#include <Point.h>
 
 Q_MOC_INCLUDE("MapQuickView.h")
 
@@ -38,8 +41,7 @@ class MapViewModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView *mapView READ mapView WRITE setMapView NOTIFY
-                   mapViewChanged)
+    Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView *mapView READ mapView WRITE setMapView NOTIFY mapViewChanged)
 
     Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
 
@@ -55,7 +57,11 @@ public:
     Q_INVOKABLE bool addGeoJsonPolygonFeatures(const QString& features, const QString& renderer);
 
 signals:
+    void mapViewClicked(const QString& location);
     void mapViewChanged();
+
+private slots:
+    void onMouseClicked(QMouseEvent& mouseEvent);
 
 private:
     Esri::ArcGISRuntime::MapQuickView *mapView() const;
