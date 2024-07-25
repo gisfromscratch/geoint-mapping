@@ -28,8 +28,14 @@ Item {
             console.log(bridge.getValue("Map view changed"));
         }
 
+        onMapViewExtentChanged: {
+            console.log(model.mapViewExtent);
+        }
+
         onMapViewClicked: location => {
             console.log(location);
+            model.clearGraphicOverlays();
+            model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';
         }
     }
 }

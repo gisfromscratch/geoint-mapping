@@ -42,8 +42,8 @@ class MapViewModel : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView *mapView READ mapView WRITE setMapView NOTIFY mapViewChanged)
-
     Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
+    Q_PROPERTY(const QString& mapViewExtent READ mapViewExtent WRITE setMapViewExtent NOTIFY mapViewExtentChanged)
 
 public:
     explicit MapViewModel(QObject *parent = nullptr);
@@ -56,16 +56,23 @@ public:
     Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);
     Q_INVOKABLE bool addGeoJsonPolygonFeatures(const QString& features, const QString& renderer);
 
+    Q_INVOKABLE void clearGraphicOverlays();
+
 signals:
     void mapViewClicked(const QString& location);
     void mapViewChanged();
+    void mapViewExtentChanged();
 
 private slots:
     void onMouseClicked(QMouseEvent& mouseEvent);
+    void onViewpointChanged();
 
 private:
     Esri::ArcGISRuntime::MapQuickView *mapView() const;
     void setMapView(Esri::ArcGISRuntime::MapQuickView *mapView);
+
+    QString mapViewExtent() const;
+    void setMapViewExtent(const QString& extent);
 
     Esri::ArcGISRuntime::Map *m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;

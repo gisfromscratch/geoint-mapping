@@ -45,6 +45,8 @@
 #include <MapTypes.h>
 #include <Renderer.h>
 #include <SpatialReference.h>
+#include <TaskWatcher.h>
+#include <Viewpoint.h>
 
 #include "SimpleGeoJsonLayer.h"
 
@@ -74,6 +76,7 @@ void MapViewModel::setMapView(MapQuickView *mapView)
     if (m_mapView)
     {
         disconnect(m_mapView, &MapQuickView::mouseClicked, this, &MapViewModel::onMouseClicked);
+        disconnect(m_mapView, &MapQuickView::viewpointChanged, this, &MapViewModel::onViewpointChanged);
     }
 
     m_mapView = mapView;
@@ -81,8 +84,31 @@ void MapViewModel::setMapView(MapQuickView *mapView)
     qDebug() << "Map view model was updated with a new map view";
 
     connect(m_mapView, &MapQuickView::mouseClicked, this, &MapViewModel::onMouseClicked);
+    connect(m_mapView, &MapQuickView::viewpointChanged, this, &MapViewModel::onViewpointChanged);
 
     emit mapViewChanged();
+}
+
+QString MapViewModel::mapViewExtent() const
+{
+    if (!m_mapView)
+    {
+        return "";
+    }
+
+    Viewpoint currentViewpoint = m_mapView->currentViewpoint(ViewpointType::BoundingGeometry);
+    return currentViewpoint.targetGeometry().toJson();
+}
+
+void MapViewModel::setMapViewExtent(const QString& envelope)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    Geometry boundingGeometry = Geometry::fromJson(envelope);
+    m_mapView->setViewpointGeometry(boundingGeometry);
 }
 
 void MapViewModel::setBasemapStyle(const QString& basemapStyle)
@@ -230,6 +256,17 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     return true;
 }
 
+void MapViewModel::clearGraphicOverlays()
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    // Remove all graphic overlays
+    m_mapView->graphicsOverlays()->clear();
+}
+
 void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
 {
     if (!m_mapView)
@@ -241,4 +278,9 @@ void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
     QPointF screenPosition = mouseEvent.position();
     Point mapClickLocation = m_mapView->screenToLocation(screenPosition.x(), screenPosition.y());
     emit mapViewClicked(mapClickLocation.toJson());
+}
+
+void MapViewModel::onViewpointChanged()
+{
+    emit mapViewExtentChanged();
 }
