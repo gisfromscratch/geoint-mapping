@@ -22,47 +22,46 @@
 // See <https://developers.arcgis.com/qt/> for further information.
 //
 
-#include "mapviewmodel.h"
+#include "MapViewModel.h"
 
 #include <QJsonDocument>
 
 #include <Basemap.h>
+#include <GraphicsOverlay.h>
 #include <GraphicsOverlayListModel.h>
 #include <Map.h>
-#include <MapTypes.h>
 #include <MapQuickView.h>
+#include <MapTypes.h>
+#include <Renderer.h>
 
 #include "SimpleGeoJsonLayer.h"
 
 using namespace Esri::ArcGISRuntime;
 
-MapViewModel::MapViewModel(QObject* parent /* = nullptr */):
-    QObject(parent),
-    m_map(new Map(BasemapStyle::OsmStandard, this))
+MapViewModel::MapViewModel(QObject *parent /* = nullptr */)
+    : QObject(parent)
+    , m_map(new Map(BasemapStyle::ArcGISStreets, this))
 {
-    // Instantiate
     qDebug() << "Map view model was instantiated.";
 }
 
-MapViewModel::~MapViewModel()
-{
-}
+MapViewModel::~MapViewModel() {}
 
-MapQuickView* MapViewModel::mapView() const
+MapQuickView *MapViewModel::mapView() const
 {
     return m_mapView;
 }
 
 // Set the view (created in QML)
-void MapViewModel::setMapView(MapQuickView* mapView)
+void MapViewModel::setMapView(MapQuickView *mapView)
 {
-    if (!mapView || mapView == m_mapView)
-    {
+    if (!mapView || mapView == m_mapView) {
         return;
     }
 
     m_mapView = mapView;
     m_mapView->setMap(m_map);
+    qDebug() << "Map view model was updated with a new map view";
 
     emit mapViewChanged();
 }
@@ -150,6 +149,48 @@ bool MapViewModel::addGeoJsonFeatures(const QString& features)
     GraphicsOverlay* geoJsonLinesOverlay = geojsonLayer->linesOverlay();
     m_mapView->graphicsOverlays()->append(geoJsonLinesOverlay);
     GraphicsOverlay* geoJsonAreasOverlay = geojsonLayer->areasOverlay();
+    m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
+    return true;
+}
+
+bool MapViewModel::addGeoJsonPointFeatures(const QString& features, const QString& renderer)
+{
+    SimpleGeoJsonLayer* geojsonLayer = new SimpleGeoJsonLayer(this);
+    QJsonDocument geojsonDocument = QJsonDocument::fromJson(features.toUtf8());
+    geojsonLayer->load(geojsonDocument);
+
+    // Add the GeoJSON layer
+    GraphicsOverlay* geoJsonPointsOverlay = geojsonLayer->pointsOverlay();
+    Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
+    geoJsonPointsOverlay->setRenderer(geoJsonRenderer);
+    m_mapView->graphicsOverlays()->append(geoJsonPointsOverlay);
+    return true;
+}
+
+bool MapViewModel::addGeoJsonLineFeatures(const QString& features, const QString& renderer)
+{
+    SimpleGeoJsonLayer* geojsonLayer = new SimpleGeoJsonLayer(this);
+    QJsonDocument geojsonDocument = QJsonDocument::fromJson(features.toUtf8());
+    geojsonLayer->load(geojsonDocument);
+
+    // Add the GeoJSON layer
+    GraphicsOverlay* geoJsonLinesOverlay = geojsonLayer->linesOverlay();
+    Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
+    geoJsonLinesOverlay->setRenderer(geoJsonRenderer);
+    m_mapView->graphicsOverlays()->append(geoJsonLinesOverlay);
+    return true;
+}
+
+bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QString& renderer)
+{
+    SimpleGeoJsonLayer* geojsonLayer = new SimpleGeoJsonLayer(this);
+    QJsonDocument geojsonDocument = QJsonDocument::fromJson(features.toUtf8());
+    geojsonLayer->load(geojsonDocument);
+
+    // Add the GeoJSON layer
+    GraphicsOverlay* geoJsonAreasOverlay = geojsonLayer->areasOverlay();
+    Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
+    geoJsonAreasOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
     return true;
 }

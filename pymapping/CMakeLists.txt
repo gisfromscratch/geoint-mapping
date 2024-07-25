@@ -29,8 +29,8 @@ find_package (pybind11 CONFIG REQUIRED)
 pybind11_add_module (
     coremapping
     main.cpp
-    mapviewmodel.h
-    mapviewmodel.cpp
+    MapViewModel.h
+    MapViewModel.cpp
     SimpleGeoJsonLayer.h
     SimpleGeoJsonLayer.cpp
     GraphicsFactory.h

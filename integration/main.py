@@ -91,10 +91,23 @@ if __name__ == "__main__":
         ]
     }
 
-    succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonFeatures",
+    renderer = {'labelingInfo': None,
+            'label': '',
+            'description': '',
+            'type': 'simple',
+            'symbol': {'type': 'esriSFS',
+            'style': 'esriSFSSolid',
+            'color': [0, 128, 0, 128],
+            'outline': {'type': 'esriSLS',
+            'style': 'esriSLSSolid',
+            'color': [110, 110, 110, 255],
+            'width': 1}}}
+
+    succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonPolygonFeatures",
         Qt.DirectConnection,
         Q_RETURN_ARG(bool),
-        Q_ARG(str, json.dumps(features)))
+        Q_ARG(str, json.dumps(features)),
+        Q_ARG(str, json.dumps(renderer)))
 
     ex = application.exec()
     del engine

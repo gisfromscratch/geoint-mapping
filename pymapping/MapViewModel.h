@@ -25,14 +25,12 @@
 #ifndef MAPVIEWMODEL_H
 #define MAPVIEWMODEL_H
 
-#include <QObject>
-
 namespace Esri::ArcGISRuntime {
 class Map;
 class MapQuickView;
 } // namespace Esri::ArcGISRuntime
 
-#include <MapTypes.h>
+#include <QObject>
 
 Q_MOC_INCLUDE("MapQuickView.h")
 
@@ -40,26 +38,31 @@ class MapViewModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView* mapView READ mapView WRITE setMapView NOTIFY mapViewChanged)
+    Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView *mapView READ mapView WRITE setMapView NOTIFY
+                   mapViewChanged)
+
     Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
 
 public:
-    explicit MapViewModel(QObject* parent = nullptr);
+    explicit MapViewModel(QObject *parent = nullptr);
     ~MapViewModel() override;
 
     void setBasemapStyle(const QString& basemapStyle);
 
     Q_INVOKABLE bool addGeoJsonFeatures(const QString& features);
+    Q_INVOKABLE bool addGeoJsonPointFeatures(const QString& features, const QString& renderer);
+    Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);
+    Q_INVOKABLE bool addGeoJsonPolygonFeatures(const QString& features, const QString& renderer);
 
 signals:
     void mapViewChanged();
 
 private:
-    Esri::ArcGISRuntime::MapQuickView* mapView() const;
-    void setMapView(Esri::ArcGISRuntime::MapQuickView* mapView);
+    Esri::ArcGISRuntime::MapQuickView *mapView() const;
+    void setMapView(Esri::ArcGISRuntime::MapQuickView *mapView);
 
-    Esri::ArcGISRuntime::Map* m_map = nullptr;
-    Esri::ArcGISRuntime::MapQuickView* m_mapView = nullptr;
+    Esri::ArcGISRuntime::Map *m_map = nullptr;
+    Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;
 };
 
 #endif // MAPVIEWMODEL_H

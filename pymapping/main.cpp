@@ -41,7 +41,7 @@ using namespace std;
 
 #include <QProcessEnvironment>
 
-#include "mapviewmodel.h"
+#include "MapViewModel.h"
 
 namespace py = pybind11;
 
