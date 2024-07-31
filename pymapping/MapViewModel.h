@@ -44,6 +44,7 @@ class MapViewModel : public QObject
     Q_PROPERTY(Esri::ArcGISRuntime::MapQuickView *mapView READ mapView WRITE setMapView NOTIFY mapViewChanged)
     Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
     Q_PROPERTY(const QString& mapViewExtent READ mapViewExtent WRITE setMapViewExtent NOTIFY mapViewExtentChanged)
+    Q_PROPERTY(const QString& mapViewCenter READ mapViewCenter WRITE setMapViewCenter NOTIFY mapViewCenterChanged)
 
 public:
     explicit MapViewModel(QObject *parent = nullptr);
@@ -62,6 +63,7 @@ signals:
     void mapViewClicked(const QString& location);
     void mapViewChanged();
     void mapViewExtentChanged();
+    void mapViewCenterChanged();
 
 private slots:
     void onMouseClicked(QMouseEvent& mouseEvent);
@@ -73,6 +75,9 @@ private:
 
     QString mapViewExtent() const;
     void setMapViewExtent(const QString& extent);
+
+    QString mapViewCenter() const;
+    void setMapViewCenter(const QString& center);
 
     Esri::ArcGISRuntime::Map *m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;

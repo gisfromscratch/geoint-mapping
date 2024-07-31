@@ -111,6 +111,33 @@ void MapViewModel::setMapViewExtent(const QString& envelope)
     m_mapView->setViewpointGeometry(boundingGeometry);
 }
 
+QString MapViewModel::mapViewCenter() const
+{
+    if (!m_mapView)
+    {
+        return "";
+    }
+
+    Viewpoint currentViewpoint = m_mapView->currentViewpoint(ViewpointType::CenterAndScale);
+    return currentViewpoint.targetGeometry().toJson();
+}
+
+void MapViewModel::setMapViewCenter(const QString& center)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    Geometry centerGeometry = Geometry::fromJson(center);
+    if (GeometryType::Point != centerGeometry.geometryType())
+    {
+        return;
+    }
+
+    m_mapView->setViewpointCenter(static_cast<Point>(centerGeometry));
+}
+
 void MapViewModel::setBasemapStyle(const QString& basemapStyle)
 {
     if (m_map)
@@ -283,4 +310,5 @@ void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
 void MapViewModel::onViewpointChanged()
 {
     emit mapViewExtentChanged();
+    emit mapViewCenterChanged();
 }

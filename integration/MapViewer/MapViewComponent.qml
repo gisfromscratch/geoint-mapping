@@ -32,6 +32,10 @@ Item {
             console.log(model.mapViewExtent);
         }
 
+        onMapViewCenterChanged: {
+            console.log(model.mapViewCenter);
+        }
+
         onMapViewClicked: location => {
             console.log(location);
             model.clearGraphicOverlays();
