@@ -126,5 +126,12 @@ PYBIND11_MODULE(coremapping, m) {
         .def("addGeoJsonFeatures", &MapViewModel::addGeoJsonFeatures, py::arg("features"))
         .def("addGeoJsonPointFeatures", &MapViewModel::addGeoJsonPointFeatures, py::arg("features"), py::arg("renderer"))
         .def("addGeoJsonLineFeatures", &MapViewModel::addGeoJsonLineFeatures, py::arg("features"), py::arg("renderer"))
-        .def("addGeoJsonPolygonFeatures", &MapViewModel::addGeoJsonPolygonFeatures, py::arg("features"), py::arg("renderer"));
+        .def("addGeoJsonPolygonFeatures", &MapViewModel::addGeoJsonPolygonFeatures, py::arg("features"), py::arg("renderer"))
+        .def("addFeatureLayer", &MapViewModel::addFeatureLayer, py::arg("featureServiceUrl"))
+        .def("addFeatureLayerFromMobile", &MapViewModel::addFeatureLayerFromMobile, py::arg("workspacePath"), py::arg("featureClassName"))
+        .def("addFeatureLayerFromGeoPackage", &MapViewModel::addFeatureLayerFromGeoPackage, py::arg("workspacePath"), py::arg("featureClassName"))
+        .def("addRasterLayer", &MapViewModel::addRasterLayer, py::arg("rasterFilePath"), py::arg("opacity"))
+        .def("addRasterLayerFromGeoPackage", &MapViewModel::addRasterLayerFromGeoPackage, py::arg("workspacePath"), py::arg("rasterName"), py::arg("opacity"))
+        .def("clearGraphicOverlays", &MapViewModel::clearGraphicOverlays)
+        .def("clearOperationalLayers", &MapViewModel::clearOperationalLayers);
 }

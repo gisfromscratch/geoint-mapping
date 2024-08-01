@@ -105,6 +105,7 @@ if __name__ == "__main__":
             'width': 1}}}
     
     mapview_model.addGeoJsonPolygonFeatures(json.dumps(features), json.dumps(renderer))
+    #mapview_model.addRasterLayer("/mnt/data/GIS/Sentinel-2/x_____xUhQN_f7Y9ij8HDjj7W61Bw..x_____x_ags_b176d09a_7b38_471b_a75e_ad7f4e9dc00a.tif", 0.7)
 
     """
     succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonPolygonFeatures",
