@@ -29,12 +29,18 @@
 #include <QJsonDocument>
 
 #include <Basemap.h>
+#include <Error.h>
 #include <FeatureCollection.h>
 #include <FeatureCollectionLayer.h>
 #include <FeatureCollectionTable.h>
 #include <FeatureCollectionTableListModel.h>
+#include <FeatureLayer.h>
 #include <Field.h>
+#include <Geodatabase.h>
+#include <GeodatabaseFeatureTable.h>
 #include <GeometryTypes.h>
+#include <GeoPackage.h>
+#include <GeoPackageFeatureTable.h>
 #include <Graphic.h>
 #include <GraphicListModel.h>
 #include <GraphicsOverlay.h>
@@ -44,6 +50,7 @@
 #include <MapQuickView.h>
 #include <MapTypes.h>
 #include <Renderer.h>
+#include <ServiceFeatureTable.h>
 #include <SpatialReference.h>
 #include <TaskWatcher.h>
 #include <Viewpoint.h>
@@ -281,6 +288,58 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     m_map->operationalLayers()->append(geojsonFeatureCollectionLayer);
     */
     return true;
+}
+
+void MapViewModel::addFeatureLayer(const QString& featureServiceUrl)
+{
+    QUrl featureServiceUri(featureServiceUrl);
+    ServiceFeatureTable* serviceFeatureTable = new ServiceFeatureTable(featureServiceUri, this);
+    FeatureLayer* featureLayer = new FeatureLayer(serviceFeatureTable, this);
+    m_map->operationalLayers()->append(featureLayer);
+}
+
+void MapViewModel::addFeatureLayerFromMobile(const QString& workspacePath, const QString& featureClassName)
+{
+    Geodatabase* geodatabase = new Geodatabase(workspacePath, this);
+    connect(geodatabase, &Geodatabase::doneLoading, this, [this, geodatabase, workspacePath, featureClassName](const Error& error)
+    {
+        if (!error.isEmpty())
+        {
+            qWarning() << "Failed to load mobile geodatabase:" << error.message();
+            qWarning() << workspacePath << ":" << featureClassName;
+            return;
+        }
+
+        GeodatabaseFeatureTable* geodatabaseFeatureTable = geodatabase->geodatabaseFeatureTable(featureClassName);
+        FeatureLayer* featureLayer = new FeatureLayer(geodatabaseFeatureTable, this);
+        m_map->operationalLayers()->append(featureLayer);
+    });
+    geodatabase->load();
+}
+
+void MapViewModel::addFeatureLayerFromGeoPackage(const QString& workspacePath, const QString& featureClassName)
+{
+    GeoPackage* geopackage = new GeoPackage(workspacePath, this);
+    connect(geopackage, &GeoPackage::doneLoading, this, [this, geopackage, workspacePath, featureClassName](const Error& error)
+    {
+        if (!error.isEmpty())
+        {
+            qWarning() << "Failed to load geopackage:" << error.message();
+            qWarning() << workspacePath << ":" << featureClassName;
+            return;
+        }
+
+        QList<GeoPackageFeatureTable*> featureTables = geopackage->geoPackageFeatureTables();
+        for (GeoPackageFeatureTable* featureTable : featureTables)
+        {
+            if (featureClassName.isEmpty() || featureClassName == featureTable->tableName())
+            {
+                FeatureLayer* featureLayer = new FeatureLayer(featureTable, this);
+                m_map->operationalLayers()->append(featureLayer);
+            }
+        }
+    });
+    geopackage->load();
 }
 
 void MapViewModel::clearGraphicOverlays()

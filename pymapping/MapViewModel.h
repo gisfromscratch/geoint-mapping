@@ -57,6 +57,10 @@ public:
     Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);
     Q_INVOKABLE bool addGeoJsonPolygonFeatures(const QString& features, const QString& renderer);
 
+    Q_INVOKABLE void addFeatureLayer(const QString& featureServiceUrl);
+    Q_INVOKABLE void addFeatureLayerFromMobile(const QString& workspacePath, const QString& featureClassName);
+    Q_INVOKABLE void addFeatureLayerFromGeoPackage(const QString& workspacePath, const QString& featureClassName);
+
     Q_INVOKABLE void clearGraphicOverlays();
 
 signals:

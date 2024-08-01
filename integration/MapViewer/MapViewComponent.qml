@@ -28,6 +28,7 @@ Item {
             console.log(bridge.getValue("Map view changed"));
         }
 
+        /*
         onMapViewExtentChanged: {
             console.log(model.mapViewExtent);
         }
@@ -35,11 +36,17 @@ Item {
         onMapViewCenterChanged: {
             console.log(model.mapViewCenter);
         }
+        */
 
         onMapViewClicked: location => {
+            /*
             console.log(location);
             model.clearGraphicOverlays();
             model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';
+
+            model.addFeatureLayer("https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/USA_Wildfires_v1/FeatureServer/0");
+            model.addFeatureLayerFromGeoPackage("/mnt/data/GIS/US/Alaska/AK_Structures.gpkg", "AK_Structures");
+            */
         }
     }
 }
