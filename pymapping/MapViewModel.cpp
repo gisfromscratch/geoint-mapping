@@ -41,6 +41,7 @@
 #include <GeometryTypes.h>
 #include <GeoPackage.h>
 #include <GeoPackageFeatureTable.h>
+#include <GeoPackageRaster.h>
 #include <Graphic.h>
 #include <GraphicListModel.h>
 #include <GraphicsOverlay.h>
@@ -49,6 +50,8 @@
 #include <Map.h>
 #include <MapQuickView.h>
 #include <MapTypes.h>
+#include <Raster.h>
+#include <RasterLayer.h>
 #include <Renderer.h>
 #include <ServiceFeatureTable.h>
 #include <SpatialReference.h>
@@ -336,6 +339,40 @@ void MapViewModel::addFeatureLayerFromGeoPackage(const QString& workspacePath, c
             {
                 FeatureLayer* featureLayer = new FeatureLayer(featureTable, this);
                 m_map->operationalLayers()->append(featureLayer);
+            }
+        }
+    });
+    geopackage->load();
+}
+
+void MapViewModel::addRasterLayer(const QString& rasterFilePath, float opacity)
+{
+    Raster* raster = new Raster(rasterFilePath, this);
+    RasterLayer* rasterLayer = new RasterLayer(raster, this);
+    rasterLayer->setOpacity(opacity);
+    m_map->operationalLayers()->append(rasterLayer);
+}
+
+void MapViewModel::addRasterLayerFromGeoPackage(const QString& workspacePath, const QString& rasterName, float opacity)
+{
+    GeoPackage* geopackage = new GeoPackage(workspacePath, this);
+    connect(geopackage, &GeoPackage::doneLoading, this, [this, geopackage, workspacePath, rasterName, opacity](const Error& error)
+    {
+        if (!error.isEmpty())
+        {
+            qWarning() << "Failed to load geopackage:" << error.message();
+            qWarning() << workspacePath << ":" << rasterName;
+            return;
+        }
+
+        QList<GeoPackageRaster*> rasters = geopackage->geoPackageRasters();
+        for (GeoPackageRaster* raster : rasters)
+        {
+            if (rasterName.isEmpty() || rasterName == raster->objectName())
+            {
+                RasterLayer* rasterLayer = new RasterLayer(raster, this);
+                rasterLayer->setOpacity(opacity);
+                m_map->operationalLayers()->append(rasterLayer);
             }
         }
     });

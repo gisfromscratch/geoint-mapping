@@ -47,6 +47,7 @@ Item {
             model.addFeatureLayer("https://services9.arcgis.com/RHVPKKiFTONKtxq3/ArcGIS/rest/services/USA_Wildfires_v1/FeatureServer/0");
             model.addFeatureLayerFromGeoPackage("/mnt/data/GIS/US/Alaska/AK_Structures.gpkg", "AK_Structures");
             */
+            model.addRasterLayer("/mnt/data/GIS/Sentinel-2/x_____xUhQN_f7Y9ij8HDjj7W61Bw..x_____x_ags_b176d09a_7b38_471b_a75e_ad7f4e9dc00a.tif");
         }
     }
 }
