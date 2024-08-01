@@ -390,6 +390,12 @@ void MapViewModel::clearGraphicOverlays()
     m_mapView->graphicsOverlays()->clear();
 }
 
+void MapViewModel::clearOperationalLayers()
+{
+    // Remove all operational layers (feature, raster)
+    m_map->operationalLayers()->clear();
+}
+
 void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
 {
     if (!m_mapView)

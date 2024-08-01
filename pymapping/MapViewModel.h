@@ -65,6 +65,7 @@ public:
     Q_INVOKABLE void addRasterLayerFromGeoPackage(const QString& workspacePath, const QString& rasterName, float opacity=0.7f);
 
     Q_INVOKABLE void clearGraphicOverlays();
+    Q_INVOKABLE void clearOperationalLayers();
 
 signals:
     void mapViewClicked(const QString& location);
