@@ -50,6 +50,7 @@ Item {
             
             model.clearOperationalLayers();
             */
+            model.loadBasemapFromTilePackage("/mnt/data/GIS/US/DSA_data/DSA/BasemapData/ImageryMonterey.tpk");
         }
     }
 }

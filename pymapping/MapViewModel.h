@@ -52,6 +52,8 @@ public:
 
     void setBasemapStyle(const QString& basemapStyle);
 
+    Q_INVOKABLE void loadBasemapFromTilePackage(const QString& tilePackageFilePath);
+
     Q_INVOKABLE bool addGeoJsonFeatures(const QString& features);
     Q_INVOKABLE bool addGeoJsonPointFeatures(const QString& features, const QString& renderer);
     Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);

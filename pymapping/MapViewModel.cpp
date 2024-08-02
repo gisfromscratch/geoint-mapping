@@ -28,6 +28,7 @@
 
 #include <QJsonDocument>
 
+#include <ArcGISTiledLayer.h>
 #include <Basemap.h>
 #include <Error.h>
 #include <FeatureCollection.h>
@@ -56,6 +57,7 @@
 #include <ServiceFeatureTable.h>
 #include <SpatialReference.h>
 #include <TaskWatcher.h>
+#include <TileCache.h>
 #include <Viewpoint.h>
 
 #include "SimpleGeoJsonLayer.h"
@@ -79,7 +81,8 @@ MapQuickView *MapViewModel::mapView() const
 // Set the view (created in QML)
 void MapViewModel::setMapView(MapQuickView *mapView)
 {
-    if (!mapView || mapView == m_mapView) {
+    if (!mapView || mapView == m_mapView)
+    {
         return;
     }
 
@@ -214,6 +217,23 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
             qWarning() << basemapStyle << "is not a supported basemap style!";
         }
     }
+}
+
+void MapViewModel::loadBasemapFromTilePackage(const QString& tilePackageFilePath)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    TileCache* tileCache = new TileCache(tilePackageFilePath, this);
+    ArcGISTiledLayer* tiledLayer = new ArcGISTiledLayer(tileCache, this);
+
+    // Update the basemap
+    Basemap* basemap = new Basemap(tiledLayer, this);
+    m_map = new Map(basemap, this);
+    m_mapView->setMap(m_map);
+    qDebug() << "Map view was updated with a new map";
 }
 
 bool MapViewModel::addGeoJsonFeatures(const QString& features)
