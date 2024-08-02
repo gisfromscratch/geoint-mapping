@@ -49,8 +49,8 @@ Item {
             model.addRasterLayer("/mnt/data/GIS/Sentinel-2/x_____xUhQN_f7Y9ij8HDjj7W61Bw..x_____x_ags_b176d09a_7b38_471b_a75e_ad7f4e9dc00a.tif");
             
             model.clearOperationalLayers();
-            */
             model.loadBasemapFromTilePackage("/mnt/data/GIS/US/DSA_data/DSA/BasemapData/ImageryMonterey.tpk");
+            */
         }
     }
 }
