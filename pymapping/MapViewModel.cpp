@@ -60,6 +60,10 @@
 #include <TaskWatcher.h>
 #include <TileCache.h>
 #include <Viewpoint.h>
+#include <WmtsLayer.h>
+#include <WmtsLayerInfo.h>
+#include <WmtsService.h>
+#include <WmtsServiceInfo.h>
 
 #include "SimpleGeoJsonLayer.h"
 
@@ -235,6 +239,52 @@ void MapViewModel::loadBasemapFromTilePackage(const QString& tilePackageFilePath
     m_map = new Map(basemap, this);
     m_mapView->setMap(m_map);
     qDebug() << "Map view was updated with a new map";
+}
+
+void MapViewModel::loadBasemapFromWMTS(const QString& wmtsServiceUrl, int layerIndex)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    WmtsService* wmtsService = new WmtsService(wmtsServiceUrl, this);
+    connect(wmtsService, &WmtsService::doneLoading, this, [this, wmtsService, wmtsServiceUrl, layerIndex](const Error& error)
+    {
+        if (!error.isEmpty())
+        {
+            qWarning() << "Failed to load WMTS service:" << error.message();
+            qWarning() << wmtsServiceUrl;
+            return;
+        }
+
+        // Access the WMTS layer info list
+        WmtsServiceInfo serviceInfo = wmtsService->serviceInfo();
+        QList<WmtsLayerInfo> layerInfos = serviceInfo.layerInfos();
+        if (layerInfos.length() <= layerIndex)
+        {
+            if (layerInfos.isEmpty())
+            {
+                qWarning() << "The WMTS service does not contain any layers!";
+                return;
+            }
+            else
+            {
+                qWarning() << "The WMTS service has less than" << layerIndex + 1 << "layers!";
+                return;
+            }
+        }
+
+        QString layerId = layerInfos.at(layerIndex).wmtsLayerId();
+        WmtsLayer* wmtsLayer = new WmtsLayer(wmtsServiceUrl, layerId, this);
+
+        // Update the basemap
+        Basemap* basemap = new Basemap(wmtsLayer, this);
+        m_map = new Map(basemap, this);
+        m_mapView->setMap(m_map);
+        qDebug() << "Map view was updated with a new map";
+    });
+    wmtsService->load();
 }
 
 void MapViewModel::loadMapFromMobilePackage(const QString& mobileMapPackageFilePath, int mapIndex)

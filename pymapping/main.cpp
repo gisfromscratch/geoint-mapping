@@ -135,5 +135,6 @@ PYBIND11_MODULE(coremapping, m) {
         .def("clearGraphicOverlays", &MapViewModel::clearGraphicOverlays)
         .def("clearOperationalLayers", &MapViewModel::clearOperationalLayers)
         .def("loadBasemapFromTilePackage", &MapViewModel::loadBasemapFromTilePackage, py::arg("tilePackageFilePath"))
+        .def("loadBasemapFromWMTS", &MapViewModel::loadBasemapFromWMTS, py::arg("wmtsServiceUrl"), py::arg("layerIndex"))
         .def("loadMapFromMobilePackage", &MapViewModel::loadMapFromMobilePackage, py::arg("mobileMapPackageFilePath"), py::arg("mapIndex"));
 }

@@ -51,6 +51,7 @@ Item {
             model.clearOperationalLayers();
             model.loadBasemapFromTilePackage("/mnt/data/GIS/US/DSA_data/DSA/BasemapData/ImageryMonterey.tpk");
             model.loadMapFromMobilePackage("/mnt/data/GIS/US/Yellowstone.mmpk");
+            model.loadBasemapFromWMTS("https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS");
             */
         }
     }
