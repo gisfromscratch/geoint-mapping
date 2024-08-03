@@ -51,6 +51,7 @@
 #include <Map.h>
 #include <MapQuickView.h>
 #include <MapTypes.h>
+#include <MobileMapPackage.h>
 #include <Raster.h>
 #include <RasterLayer.h>
 #include <Renderer.h>
@@ -234,6 +235,52 @@ void MapViewModel::loadBasemapFromTilePackage(const QString& tilePackageFilePath
     m_map = new Map(basemap, this);
     m_mapView->setMap(m_map);
     qDebug() << "Map view was updated with a new map";
+}
+
+void MapViewModel::loadMapFromMobilePackage(const QString& mobileMapPackageFilePath, int mapIndex)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    MobileMapPackage* mobileMapPackage = new MobileMapPackage(mobileMapPackageFilePath, this);
+    connect(mobileMapPackage, &MobileMapPackage::doneLoading, this, [this, mobileMapPackage, mobileMapPackageFilePath, mapIndex](const Error& error)
+    {
+        if (!error.isEmpty())
+        {
+            qWarning() << "Failed to load mobile map package:" << error.message();
+            qWarning() << mobileMapPackageFilePath;
+            return;
+        }
+
+        if (!mobileMapPackage)
+        {
+            return;
+        }
+
+        QList<Map*> mobileMaps = mobileMapPackage->maps();
+        if (mobileMaps.length() <= mapIndex)
+        {
+            if (mobileMaps.isEmpty())
+            {
+                qWarning() << "The mobile map package does not contain any map!";
+                return;
+            }
+            else
+            {
+                qWarning() << "The mobile map package has less than" << mapIndex + 1 << "maps!";
+                return;
+            }
+        }
+
+        // Update the map
+        m_map = mobileMaps.at(mapIndex);
+        m_mapView->setMap(m_map);
+        qDebug() << "Map view was updated with a new map";
+    });
+
+    mobileMapPackage->load();
 }
 
 bool MapViewModel::addGeoJsonFeatures(const QString& features)

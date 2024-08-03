@@ -134,5 +134,6 @@ PYBIND11_MODULE(coremapping, m) {
         .def("addRasterLayerFromGeoPackage", &MapViewModel::addRasterLayerFromGeoPackage, py::arg("workspacePath"), py::arg("rasterName"), py::arg("opacity"))
         .def("clearGraphicOverlays", &MapViewModel::clearGraphicOverlays)
         .def("clearOperationalLayers", &MapViewModel::clearOperationalLayers)
-        .def("loadBasemapFromTilePackage", &MapViewModel::loadBasemapFromTilePackage, py::arg("tilePackageFilePath"));
+        .def("loadBasemapFromTilePackage", &MapViewModel::loadBasemapFromTilePackage, py::arg("tilePackageFilePath"))
+        .def("loadMapFromMobilePackage", &MapViewModel::loadMapFromMobilePackage, py::arg("mobileMapPackageFilePath"), py::arg("mapIndex"));
 }

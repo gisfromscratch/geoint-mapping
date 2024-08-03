@@ -54,6 +54,8 @@ public:
 
     Q_INVOKABLE void loadBasemapFromTilePackage(const QString& tilePackageFilePath);
 
+    Q_INVOKABLE void loadMapFromMobilePackage(const QString& mobileMapPackageFilePath, int mapIndex=0);
+
     Q_INVOKABLE bool addGeoJsonFeatures(const QString& features);
     Q_INVOKABLE bool addGeoJsonPointFeatures(const QString& features, const QString& renderer);
     Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);
