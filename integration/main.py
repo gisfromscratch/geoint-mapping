@@ -108,6 +108,7 @@ if __name__ == "__main__":
     #mapview_model.addRasterLayer("/mnt/data/GIS/Sentinel-2/x_____xUhQN_f7Y9ij8HDjj7W61Bw..x_____x_ags_b176d09a_7b38_471b_a75e_ad7f4e9dc00a.tif", 0.7)
     #mapview_model.loadMapFromMobilePackage("/mnt/data/GIS/US/Yellowstone.mmpk", 0)
     #mapview_model.loadBasemapFromWMTS("https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS", 0)
+    #mapview_model.loadBasemapFromWMTS("https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung", 0)
 
     """
     succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonPolygonFeatures",
