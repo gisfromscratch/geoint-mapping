@@ -1,0 +1,4 @@
+module BasemapViewer
+typeinfo basemapviewer.qmltypes
+Main 1.0 Main.qml
+MapView 1.0 MapViewComponent.qml

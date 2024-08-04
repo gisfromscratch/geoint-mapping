@@ -11,7 +11,8 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "env": {
-                "LD_LIBRARY_PATH": "/mnt/data/Qt/6.5.3/gcc_64/lib;$LD_LIBRARY_PATH"
+                "LD_LIBRARY_PATH": "/mnt/data/Qt/6.5.3/gcc_64/lib;$LD_LIBRARY_PATH",
+                "maptoolkit_path": "/mnt/data/src/geoint-mapping/build/pymapping-Release/"
             }
         }
     ]
