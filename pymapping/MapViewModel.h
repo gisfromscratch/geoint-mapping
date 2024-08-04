@@ -25,12 +25,15 @@
 #ifndef MAPVIEWMODEL_H
 #define MAPVIEWMODEL_H
 
+class SimpleGeoJsonLayer;
+
 namespace Esri::ArcGISRuntime {
 class Map;
 class MapQuickView;
 } // namespace Esri::ArcGISRuntime
 
 #include <QObject>
+#include <QList>
 #include <QMouseEvent>
 
 #include <Point.h>
@@ -94,6 +97,8 @@ private:
 
     Esri::ArcGISRuntime::Map *m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;
+
+    QList<SimpleGeoJsonLayer*> m_geojsonLayers;
 };
 
 #endif // MAPVIEWMODEL_H

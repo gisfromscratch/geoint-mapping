@@ -349,6 +349,7 @@ bool MapViewModel::addGeoJsonFeatures(const QString& features)
     m_mapView->graphicsOverlays()->append(geoJsonLinesOverlay);
     GraphicsOverlay* geoJsonAreasOverlay = geojsonLayer->areasOverlay();
     m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
+    m_geojsonLayers.append(geojsonLayer);
     return true;
 }
 
@@ -363,6 +364,7 @@ bool MapViewModel::addGeoJsonPointFeatures(const QString& features, const QStrin
     Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
     geoJsonPointsOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonPointsOverlay);
+    m_geojsonLayers.append(geojsonLayer);
     return true;
 }
 
@@ -377,6 +379,7 @@ bool MapViewModel::addGeoJsonLineFeatures(const QString& features, const QString
     Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
     geoJsonLinesOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonLinesOverlay);
+    m_geojsonLayers.append(geojsonLayer);
     return true;
 }
 
@@ -391,6 +394,7 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     Renderer* geoJsonRenderer = Renderer::fromJson(renderer, this);
     geoJsonAreasOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
+    m_geojsonLayers.append(geojsonLayer);
 
     /*
     GraphicListModel* graphics = geoJsonAreasOverlay->graphics();
@@ -505,6 +509,11 @@ void MapViewModel::clearGraphicOverlays()
 
     // Remove all graphic overlays
     m_mapView->graphicsOverlays()->clear();
+
+    // Remove and destroy every GeoJSON layers
+    // Should also destroy every create Graphic instance
+    qDeleteAll(m_geojsonLayers.begin(), m_geojsonLayers.end());
+    m_geojsonLayers.clear();
 }
 
 void MapViewModel::clearOperationalLayers()
