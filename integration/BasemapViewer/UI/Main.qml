@@ -50,7 +50,6 @@ ApplicationWindow {
         "ArcGISNavigation",
         "ArcGISStreets",
         "ArcGISTopographic",
-        "ArcGISOceans",
         "ArcGISTerrain",
         "ArcGISCommunity",
         "OsmStandard"
