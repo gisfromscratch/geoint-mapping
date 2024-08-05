@@ -1,0 +1,4 @@
+module UI
+typeinfo ui.qmltypes
+Main 1.0 Main.qml
+MapViewComponent 1.0 MapViewComponent.qml
