@@ -39,6 +39,7 @@
 #include <Field.h>
 #include <Geodatabase.h>
 #include <GeodatabaseFeatureTable.h>
+#include <GeometryEditor.h>
 #include <GeometryTypes.h>
 #include <GeoPackage.h>
 #include <GeoPackageFeatureTable.h>
@@ -59,6 +60,7 @@
 #include <SpatialReference.h>
 #include <TaskWatcher.h>
 #include <TileCache.h>
+#include <VertexTool.h>
 #include <Viewpoint.h>
 #include <WmtsLayer.h>
 #include <WmtsLayerInfo.h>
@@ -72,6 +74,8 @@ using namespace Esri::ArcGISRuntime;
 MapViewModel::MapViewModel(QObject *parent /* = nullptr */)
     : QObject(parent)
     , m_map(new Map(BasemapStyle::ArcGISStreets, this))
+    , m_geometryEditor(new GeometryEditor(this))
+    , m_sketchTool(new VertexTool(this))
 {
     qDebug() << "Map view model was instantiated.";
 }
@@ -103,6 +107,8 @@ void MapViewModel::setMapView(MapQuickView *mapView)
 
     connect(m_mapView, &MapQuickView::mouseClicked, this, &MapViewModel::onMouseClicked);
     connect(m_mapView, &MapQuickView::viewpointChanged, this, &MapViewModel::onViewpointChanged);
+
+    m_mapView->setGeometryEditor(m_geometryEditor);
 
     emit mapViewChanged();
 }
@@ -522,11 +528,62 @@ void MapViewModel::clearOperationalLayers()
     m_map->operationalLayers()->clear();
 }
 
+void MapViewModel::startSketching(SketchEditorMode sketchEditorMode)
+{
+    if (m_geometryEditor->isStarted())
+    {
+        qWarning() << "Sketch editor was already started!";
+        m_geometryEditor->stop();
+    }
+
+    m_geometryEditor->setTool(m_sketchTool);
+
+    switch(sketchEditorMode)
+    {
+    case SketchEditorMode::PointSketchMode:
+        m_geometryEditor->start(GeometryType::Point);
+        break;
+
+    case SketchEditorMode::MultipointSketchMode:
+        m_geometryEditor->start(GeometryType::Multipoint);
+        break;
+
+    case SketchEditorMode::PolylineSketchMode:
+        m_geometryEditor->start(GeometryType::Polyline);
+        break;
+
+    case SketchEditorMode::PolygonSketchMode:
+        m_geometryEditor->start(GeometryType::Polygon);
+        break;
+
+    default:
+        qWarning() << sketchEditorMode << "is not a supported sketch editor mode!";
+        break;
+    }
+}
+
+void MapViewModel::stopSketching()
+{
+    // Stop sketching and emit sketch geometry
+    Geometry sketchGeometry = m_geometryEditor->stop();
+    emit sketchCompleted(sketchGeometry.toJson());
+}
+
 void MapViewModel::onMouseClicked(QMouseEvent& mouseEvent)
 {
     if (!m_mapView)
     {
         return;
+    }
+
+    // Check if sketching is enabled
+    if (m_geometryEditor->isStarted())
+    {
+        // Right mouse click stops sketching
+        if (Qt::RightButton == mouseEvent.button())
+        {
+            stopSketching();
+        }
     }
 
     // Emit the clicked location

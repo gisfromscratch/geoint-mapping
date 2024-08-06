@@ -35,11 +35,15 @@ Item {
 
         onMapViewCenterChanged: {
             console.log(model.mapViewCenter);
+        }        
+        
+        onSketchCompleted: geometry => {
+            console.log(geometry);
         }
         */
 
         onMapViewClicked: location => {
-            console.log(location);
+            //console.log(location);
             /*
             model.clearGraphicOverlays();
             model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';
@@ -52,6 +56,8 @@ Item {
             model.loadBasemapFromTilePackage("/mnt/data/GIS/US/DSA_data/DSA/BasemapData/ImageryMonterey.tpk");
             model.loadMapFromMobilePackage("/mnt/data/GIS/US/Yellowstone.mmpk");
             model.loadBasemapFromWMTS("https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS");
+
+            model.startSketching(MapViewModel.PointSketchMode);
             */
         }
     }

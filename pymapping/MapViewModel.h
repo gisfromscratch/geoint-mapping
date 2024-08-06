@@ -28,8 +28,10 @@
 class SimpleGeoJsonLayer;
 
 namespace Esri::ArcGISRuntime {
+class GeometryEditor;
 class Map;
 class MapQuickView;
+class VertexTool;
 } // namespace Esri::ArcGISRuntime
 
 #include <QObject>
@@ -53,6 +55,15 @@ public:
     explicit MapViewModel(QObject *parent = nullptr);
     ~MapViewModel() override;
 
+    enum class SketchEditorMode {
+        PointSketchMode,
+        MultipointSketchMode,
+        PolylineSketchMode,
+        PolygonSketchMode
+    };
+
+    Q_ENUM(SketchEditorMode)
+
     void setBasemapStyle(const QString& basemapStyle);
 
     Q_INVOKABLE void loadBasemapFromTilePackage(const QString& tilePackageFilePath);
@@ -73,13 +84,18 @@ public:
     Q_INVOKABLE void addRasterLayerFromGeoPackage(const QString& workspacePath, const QString& rasterName, float opacity=0.7f);
 
     Q_INVOKABLE void clearGraphicOverlays();
-    Q_INVOKABLE void clearOperationalLayers();
+    Q_INVOKABLE void clearOperationalLayers();    
+
+    Q_INVOKABLE void startSketching(SketchEditorMode sketchEditorMode);
+    Q_INVOKABLE void stopSketching();
+
 
 signals:
     void mapViewClicked(const QString& location);
     void mapViewChanged();
     void mapViewExtentChanged();
     void mapViewCenterChanged();
+    void sketchCompleted(const QString& geometry);
 
 private slots:
     void onMouseClicked(QMouseEvent& mouseEvent);
@@ -97,6 +113,8 @@ private:
 
     Esri::ArcGISRuntime::Map *m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;
+    Esri::ArcGISRuntime::GeometryEditor *m_geometryEditor = nullptr;
+    Esri::ArcGISRuntime::VertexTool *m_sketchTool = nullptr;
 
     QList<SimpleGeoJsonLayer*> m_geojsonLayers;
 };
