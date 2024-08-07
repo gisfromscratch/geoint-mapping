@@ -29,6 +29,7 @@ class SimpleGeoJsonLayer;
 
 namespace Esri::ArcGISRuntime {
 class GeometryEditor;
+class GraphicsOverlay;
 class Map;
 class MapQuickView;
 class VertexTool;
@@ -76,6 +77,8 @@ public:
     Q_INVOKABLE bool addGeoJsonLineFeatures(const QString& features, const QString& renderer);
     Q_INVOKABLE bool addGeoJsonPolygonFeatures(const QString& features, const QString& renderer);
 
+    Q_INVOKABLE void addGeometries(const QString& geometries, const QString& renderer);
+
     Q_INVOKABLE void addFeatureLayer(const QString& featureServiceUrl);
     Q_INVOKABLE void addFeatureLayerFromMobile(const QString& workspacePath, const QString& featureClassName);
     Q_INVOKABLE void addFeatureLayerFromGeoPackage(const QString& workspacePath, const QString& featureClassName);
@@ -117,6 +120,7 @@ private:
     Esri::ArcGISRuntime::VertexTool *m_sketchTool = nullptr;
 
     QList<SimpleGeoJsonLayer*> m_geojsonLayers;
+    QList<Esri::ArcGISRuntime::GraphicsOverlay*> m_graphicLayers;
 };
 
 #endif // MAPVIEWMODEL_H

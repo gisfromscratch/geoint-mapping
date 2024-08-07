@@ -26,11 +26,14 @@
 
 #include <algorithm>
 
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 
 #include <ArcGISTiledLayer.h>
 #include <Basemap.h>
 #include <Error.h>
+#include <Feature.h>
 #include <FeatureCollection.h>
 #include <FeatureCollectionLayer.h>
 #include <FeatureCollectionTable.h>
@@ -401,6 +404,38 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     geoJsonAreasOverlay->setRenderer(geoJsonRenderer);
     m_mapView->graphicsOverlays()->append(geoJsonAreasOverlay);
     m_geojsonLayers.append(geojsonLayer);
+    return true;
+}
+
+void MapViewModel::addGeometries(const QString& geometries, const QString& renderer)
+{
+    QJsonDocument geometriesDocument = QJsonDocument::fromJson(geometries.toUtf8());
+    if (geometriesDocument.isNull())
+    {
+        qDebug() << "JSON is invalid!";
+        return;
+    }
+    if (!geometriesDocument.isArray())
+    {
+        qDebug() << "JSON document is not an array!";
+        return;
+    }
+
+    GraphicsOverlay* graphicsOverlay = new GraphicsOverlay(this);
+    Renderer* graphicsRenderer = Renderer::fromJson(renderer, graphicsOverlay);
+    graphicsOverlay->setRenderer(graphicsRenderer);
+    QJsonArray geometriesArray = geometriesDocument.array();
+    foreach (const QJsonValue& geometryValue, geometriesArray)
+    {
+        if (geometryValue.isObject())
+        {
+            QJsonDocument geometryDocument(geometryValue.toObject());
+            Geometry geometry = Geometry::fromJson(geometryDocument.toJson(QJsonDocument::Compact));
+            Graphic* geoElement = new Graphic(geometry, graphicsOverlay);
+            graphicsOverlay->graphics()->append(geoElement);
+        }
+    }
+    m_mapView->graphicsOverlays()->append(graphicsOverlay);
 
     /*
     GraphicListModel* graphics = geoJsonAreasOverlay->graphics();
@@ -417,7 +452,6 @@ bool MapViewModel::addGeoJsonPolygonFeatures(const QString& features, const QStr
     FeatureCollectionLayer* geojsonFeatureCollectionLayer = new FeatureCollectionLayer(geojsonFeatureCollection, this);
     m_map->operationalLayers()->append(geojsonFeatureCollectionLayer);
     */
-    return true;
 }
 
 void MapViewModel::addFeatureLayer(const QString& featureServiceUrl)
@@ -520,6 +554,11 @@ void MapViewModel::clearGraphicOverlays()
     // Should also destroy every create Graphic instance
     qDeleteAll(m_geojsonLayers.begin(), m_geojsonLayers.end());
     m_geojsonLayers.clear();
+
+    // Remove and destroy every graphic overlays
+    // Should also destroy every create Graphic instance
+    qDeleteAll(m_graphicLayers.begin(), m_graphicLayers.end());
+    m_graphicLayers.clear();
 }
 
 void MapViewModel::clearOperationalLayers()

@@ -26,6 +26,7 @@ Item {
         
         onMapViewChanged: {
             console.log(bridge.getValue("Map view changed"));
+            //model.startSketching(MapViewModel.PolygonSketchMode);
         }
 
         /*
@@ -39,11 +40,24 @@ Item {
         
         onSketchCompleted: geometry => {
             console.log(geometry);
+            var geometries = [JSON.parse(geometry)];
+            var renderer = {
+                'label': '',
+                'description': '',
+                'type': 'simple',
+                'symbol': {'type': 'esriSFS',
+                'style': 'esriSFSSolid',
+                'color': [0, 128, 0, 128],
+                'outline': {'type': 'esriSLS',
+                'style': 'esriSLSSolid',
+                'color': [110, 110, 110, 255],
+                'width': 1}}}
+            model.addGeometries(JSON.stringify(geometries), JSON.stringify(renderer));
         }
         */
 
         onMapViewClicked: location => {
-            //console.log(location);
+            console.log(location);
             /*
             model.clearGraphicOverlays();
             model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';
