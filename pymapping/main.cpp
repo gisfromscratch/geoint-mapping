@@ -127,6 +127,7 @@ PYBIND11_MODULE(coremapping, m) {
         .def("addGeoJsonPointFeatures", &MapViewModel::addGeoJsonPointFeatures, py::arg("features"), py::arg("renderer"))
         .def("addGeoJsonLineFeatures", &MapViewModel::addGeoJsonLineFeatures, py::arg("features"), py::arg("renderer"))
         .def("addGeoJsonPolygonFeatures", &MapViewModel::addGeoJsonPolygonFeatures, py::arg("features"), py::arg("renderer"))
+        .def("addGeometries", &MapViewModel::addGeometries, py::arg("geometries"), py::arg("renderer"))
         .def("addFeatureLayer", &MapViewModel::addFeatureLayer, py::arg("featureServiceUrl"))
         .def("addFeatureLayerFromMobile", &MapViewModel::addFeatureLayerFromMobile, py::arg("workspacePath"), py::arg("featureClassName"))
         .def("addFeatureLayerFromGeoPackage", &MapViewModel::addFeatureLayerFromGeoPackage, py::arg("workspacePath"), py::arg("featureClassName"))
