@@ -70,6 +70,7 @@
 #include <WmtsService.h>
 #include <WmtsServiceInfo.h>
 
+#include "GeoElementsOverlayModel.h"
 #include "SimpleGeoJsonLayer.h"
 
 using namespace Esri::ArcGISRuntime;
@@ -79,6 +80,7 @@ MapViewModel::MapViewModel(QObject *parent /* = nullptr */)
     , m_map(new Map(BasemapStyle::ArcGISStreets, this))
     , m_geometryEditor(new GeometryEditor(this))
     , m_sketchTool(new VertexTool(this))
+    , m_overlayModel(new GeoElementsOverlayModel(this))
 {
     qDebug() << "Map view model was instantiated.";
 }
@@ -112,6 +114,7 @@ void MapViewModel::setMapView(MapQuickView *mapView)
     connect(m_mapView, &MapQuickView::viewpointChanged, this, &MapViewModel::onViewpointChanged);
 
     m_mapView->setGeometryEditor(m_geometryEditor);
+    m_overlayModel->init(m_mapView->graphicsOverlays());
 
     emit mapViewChanged();
 }
@@ -163,6 +166,11 @@ void MapViewModel::setMapViewCenter(const QString& center)
     }
 
     m_mapView->setViewpointCenter(static_cast<Point>(centerGeometry));
+}
+
+GeoElementsOverlayModel* MapViewModel::overlayModel() const
+{
+    return m_overlayModel;
 }
 
 void MapViewModel::setBasemapStyle(const QString& basemapStyle)

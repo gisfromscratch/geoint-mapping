@@ -35,6 +35,8 @@ pybind11_add_module (
     SimpleGeoJsonLayer.cpp
     GraphicsFactory.h
     GraphicsFactory.cpp
+    GeoElementsOverlayModel.h
+    GeoElementsOverlayModel.cpp
 )
 
 # Copy required dynamic libraries to the build folder as a post-build step.

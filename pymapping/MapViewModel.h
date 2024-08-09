@@ -25,6 +25,7 @@
 #ifndef MAPVIEWMODEL_H
 #define MAPVIEWMODEL_H
 
+class GeoElementsOverlayModel;
 class SimpleGeoJsonLayer;
 
 namespace Esri::ArcGISRuntime {
@@ -51,6 +52,7 @@ class MapViewModel : public QObject
     Q_PROPERTY(const QString& basemapStyle WRITE setBasemapStyle)
     Q_PROPERTY(const QString& mapViewExtent READ mapViewExtent WRITE setMapViewExtent NOTIFY mapViewExtentChanged)
     Q_PROPERTY(const QString& mapViewCenter READ mapViewCenter WRITE setMapViewCenter NOTIFY mapViewCenterChanged)
+    Q_PROPERTY(GeoElementsOverlayModel* overlayModel READ overlayModel CONSTANT)
 
 public:
     explicit MapViewModel(QObject *parent = nullptr);
@@ -114,6 +116,8 @@ private:
     QString mapViewCenter() const;
     void setMapViewCenter(const QString& center);
 
+    GeoElementsOverlayModel* overlayModel() const;
+
     Esri::ArcGISRuntime::Map *m_map = nullptr;
     Esri::ArcGISRuntime::MapQuickView *m_mapView = nullptr;
     Esri::ArcGISRuntime::GeometryEditor *m_geometryEditor = nullptr;
@@ -121,6 +125,7 @@ private:
 
     QList<SimpleGeoJsonLayer*> m_geojsonLayers;
     QList<Esri::ArcGISRuntime::GraphicsOverlay*> m_graphicLayers;
+    GeoElementsOverlayModel* m_overlayModel;
 };
 
 #endif // MAPVIEWMODEL_H

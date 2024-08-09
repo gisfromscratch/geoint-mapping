@@ -26,6 +26,7 @@ Item {
         
         onMapViewChanged: {
             console.log(bridge.getValue("Map view changed"));
+            console.log(model.overlayModel.count);
             //model.startSketching(MapViewModel.PolygonSketchMode);
         }
 
@@ -58,6 +59,15 @@ Item {
 
         onMapViewClicked: location => {
             console.log(location);
+            if (0 < model.overlayModel.count) {
+                var geoelements = model.overlayModel.toDict(0);
+                for (var index=0; index<geoelements.length; index++) {
+                    var geoelement = geoelements[index];
+                    for (var attributeKey in geoelement) {
+                        console.log(attributeKey, ":", geoelement[attributeKey]);
+                    }
+                }
+            }
             /*
             model.clearGraphicOverlays();
             model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';
