@@ -2,6 +2,7 @@
 
 #include <AttributeListModel.h>
 #include <GeoElement.h>
+#include <Geometry.h>
 #include <Graphic.h>
 #include <GraphicListModel.h>
 #include <GraphicsOverlay.h>
@@ -39,7 +40,10 @@ QVariantList GeoElementsOverlayModel::toDict(int index) const
     std::for_each(graphics->begin(), graphics->end(), [&geoElements](Graphic* graphic)
     {
         AttributeListModel* attributes = graphic->attributes();
-        geoElements.append(attributes->attributesMap());
+        QVariantMap attributesMap = attributes->attributesMap();
+        Geometry geometry = graphic->geometry();
+        attributesMap.insert("geometry", geometry.toJson());
+        geoElements.append(attributesMap);
     });
 
     return geoElements;
