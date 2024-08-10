@@ -69,6 +69,7 @@ public:
     Q_ENUM(SketchEditorMode)
 
     void setBasemapStyle(const QString& basemapStyle);
+    Q_INVOKABLE void updateBasemapStyle(const QString& basemapStyle);
 
     Q_INVOKABLE void loadBasemapFromTilePackage(const QString& tilePackageFilePath);
     Q_INVOKABLE void loadBasemapFromWMTS(const QString& wmtsServiceUrl, int layerIndex=0);

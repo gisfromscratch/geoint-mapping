@@ -123,6 +123,10 @@ PYBIND11_MODULE(coremapping, m) {
     m.def("initialize", &initialize, "Initializes the underlying ArcGIS Runtime core environment.",
           py::arg("apiKey") = py::none());
 
+    // The types are only needed for typing support!
+    py::class_<MapViewModel>(m, "MapViewModel");
+    py::class_<GeoElementsOverlayModel>(m, "GeoElementsOverlayModel");
+
     /*
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
         .value("ArcGISImagery", BasemapStyle::ArcGISImagery);

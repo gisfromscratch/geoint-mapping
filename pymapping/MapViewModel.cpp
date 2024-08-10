@@ -241,6 +241,11 @@ void MapViewModel::setBasemapStyle(const QString& basemapStyle)
     }
 }
 
+void MapViewModel::updateBasemapStyle(const QString& basemapStyle)
+{
+    this->setBasemapStyle(basemapStyle);
+}
+
 void MapViewModel::loadBasemapFromTilePackage(const QString& tilePackageFilePath)
 {
     if (!m_mapView)
