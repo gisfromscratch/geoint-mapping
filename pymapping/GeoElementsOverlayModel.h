@@ -13,7 +13,6 @@ class GraphicsOverlayListModel;
 class GeoElementsOverlayModel : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
 
     Q_PROPERTY(int count READ count CONSTANT)
 
@@ -32,6 +31,6 @@ private:
     Esri::ArcGISRuntime::GraphicsOverlayListModel* m_overlayListModel;
 };
 
-Q_DECLARE_INTERFACE(GeoElementsOverlayModel, "Esri.Mapping.GeoElementsOverlayModel")
+Q_DECLARE_METATYPE(GeoElementsOverlayModel)
 
 #endif // GEOELEMENTOVERLAYMODEL_H

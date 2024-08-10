@@ -112,40 +112,9 @@ static void initialize(const string& apiKey = "")
 
     // Register the GeoElementsOverlayModel
     //qmlRegisterInterface<GeoElementsOverlayModel>("GeoElementsOverlayModel", 1);
-    qRegisterMetaType<int64_t>("int64_t");
+    qRegisterMetaType<GeoElementsOverlayModel>("GeoElementsOverlayModel");
 }
 
-class GeoElementsOverlayModelHandle {
-
-public:
-    GeoElementsOverlayModelHandle(int64_t handle)
-    {
-        m_model = reinterpret_cast<GeoElementsOverlayModel*>(handle);
-    }
-
-    int count() const
-    {
-        if (nullptr == m_model)
-        {
-            return -1;
-        }
-
-        return m_model->count();
-    }
-
-    QVariantList to_dict(int index) const
-    {
-        if (nullptr == m_model)
-        {
-            return QVariantList();
-        }
-
-        return m_model->toDict(index);
-    }
-
-private:
-    GeoElementsOverlayModel* m_model;
-};
 
 PYBIND11_MODULE(coremapping, m) {
     m.doc() = "Offers access to ArcGIS Runtime Core mapping capabilities."; // optional module docstring
@@ -155,11 +124,6 @@ PYBIND11_MODULE(coremapping, m) {
 
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
         .value("ArcGISImagery", BasemapStyle::ArcGISImagery);
-
-    py::class_<GeoElementsOverlayModelHandle>(m, "GeoElementsOverlayModel")
-        .def(py::init<int64_t>())
-        .def("count", &GeoElementsOverlayModelHandle::count)
-        .def("to_dict", &GeoElementsOverlayModelHandle::to_dict, py::arg("index"));
 
     py::class_<MapViewModel>(m, "MapViewModel")
         .def("addGeoJsonFeatures", &MapViewModel::addGeoJsonFeatures, py::arg("features"))

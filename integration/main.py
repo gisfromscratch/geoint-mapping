@@ -16,7 +16,7 @@ print(os.environ["LD_LIBRARY_PATH"])
 # The current Python environment must match the target Python release of the native coremapping library
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
-from coremapping import initialize, MapViewModel, GeoElementsOverlayModel
+from coremapping import initialize, MapViewModel
 import slots
 
 
@@ -107,15 +107,6 @@ if __name__ == "__main__":
     #geometries = [feature["geometry"] for feature in features["features"]]
     #mapview_model.addGeometries(json.dumps(geometries), json.dumps(renderer))
     mapview_model.addGeoJsonPolygonFeatures(json.dumps(features), json.dumps(renderer))
-
-    overlay_model_handle = mapview_model.getOverlayModel()
-    overlay_model = GeoElementsOverlayModel(overlay_model_handle)
-    if None is overlay_model:
-        raise ValueError("Overlay model must be initialized!")
-    
-    if 0 < overlay_model.count():
-        geoelements = overlay_model.to_dict(0)
-        print(geoelements)
     #mapview_model.addRasterLayer("/mnt/data/GIS/Sentinel-2/x_____xUhQN_f7Y9ij8HDjj7W61Bw..x_____x_ags_b176d09a_7b38_471b_a75e_ad7f4e9dc00a.tif", 0.7)
     #mapview_model.loadMapFromMobilePackage("/mnt/data/GIS/US/Yellowstone.mmpk", 0)
     #mapview_model.loadBasemapFromWMTS("https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS", 0)
