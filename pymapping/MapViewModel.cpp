@@ -548,6 +548,12 @@ void MapViewModel::addRasterLayerFromGeoPackage(const QString& workspacePath, co
     geopackage->load();
 }
 
+int64_t MapViewModel::getOverlayModel()
+{
+    qWarning() << "getOverlayModel called!";
+    return (int64_t)(&m_overlayModel);
+}
+
 void MapViewModel::clearGraphicOverlays()
 {
     if (!m_mapView)

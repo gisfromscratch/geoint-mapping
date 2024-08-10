@@ -88,6 +88,8 @@ public:
     Q_INVOKABLE void addRasterLayer(const QString& rasterFilePath, float opacity=0.7f);
     Q_INVOKABLE void addRasterLayerFromGeoPackage(const QString& workspacePath, const QString& rasterName, float opacity=0.7f);
 
+    Q_INVOKABLE int64_t getOverlayModel();
+
     Q_INVOKABLE void clearGraphicOverlays();
     Q_INVOKABLE void clearOperationalLayers();    
 
