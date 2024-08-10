@@ -122,6 +122,7 @@ PYBIND11_MODULE(coremapping, m) {
     m.def("initialize", &initialize, "Initializes the underlying ArcGIS Runtime core environment.",
           py::arg("apiKey") = py::none());
 
+    /*
     py::enum_<BasemapStyle>(m, "BasemapStyle", py::arithmetic())
         .value("ArcGISImagery", BasemapStyle::ArcGISImagery);
 
@@ -141,4 +142,5 @@ PYBIND11_MODULE(coremapping, m) {
         .def("loadBasemapFromTilePackage", &MapViewModel::loadBasemapFromTilePackage, py::arg("tilePackageFilePath"))
         .def("loadBasemapFromWMTS", &MapViewModel::loadBasemapFromWMTS, py::arg("wmtsServiceUrl"), py::arg("layerIndex"))
         .def("loadMapFromMobilePackage", &MapViewModel::loadMapFromMobilePackage, py::arg("mobileMapPackageFilePath"), py::arg("mapIndex"));
+    */
 }

@@ -16,11 +16,11 @@ print(os.environ["LD_LIBRARY_PATH"])
 # The current Python environment must match the target Python release of the native coremapping library
 # Otherwise the coremapping module cannot be imported
 sys.path.append(os.path.join(Path(__file__).parent.parent, "build", "pymapping-Release"))
-from coremapping import initialize, MapViewModel
+from coremapping import initialize
 import slots
 
 
-def find_mapview_model(window) -> MapViewModel:
+def find_mapview_model(window):
     window_children = window.findChildren(QObject)
     for window_child in window_children:
         if "MapViewModel" == window_child.metaObject().className():
