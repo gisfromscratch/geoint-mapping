@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QVariantList>
-#include <QVariantMap>
 #include <QQmlEngine>
 
 namespace Esri::ArcGISRuntime {
@@ -21,16 +20,18 @@ public:
 
     void init(Esri::ArcGISRuntime::GraphicsOverlayListModel* overlayListModel);
 
-    int count() const;
+    Q_INVOKABLE int getCount() const;
 
     Q_INVOKABLE QVariantList toDict(int index) const;
 
 signals:
 
 private:
+    int count() const;
+
     Esri::ArcGISRuntime::GraphicsOverlayListModel* m_overlayListModel;
 };
 
-Q_DECLARE_METATYPE(GeoElementsOverlayModel)
+//Q_DECLARE_METATYPE(GeoElementsOverlayModel)
 
 #endif // GEOELEMENTOVERLAYMODEL_H

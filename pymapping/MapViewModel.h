@@ -43,6 +43,7 @@ class VertexTool;
 #include <Point.h>
 
 Q_MOC_INCLUDE("MapQuickView.h")
+Q_MOC_INCLUDE("GeoElementsOverlayModel.h")
 
 class MapViewModel : public QObject
 {
@@ -125,8 +126,6 @@ private:
     QList<SimpleGeoJsonLayer*> m_geojsonLayers;
     QList<Esri::ArcGISRuntime::GraphicsOverlay*> m_graphicLayers;
     GeoElementsOverlayModel* m_overlayModel;
-
-    friend class PyGeoElementsOverlayModel;
 };
 
 #endif // MAPVIEWMODEL_H

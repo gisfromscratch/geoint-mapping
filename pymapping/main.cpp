@@ -112,7 +112,8 @@ static void initialize(const string& apiKey = "")
 
     // Register the GeoElementsOverlayModel
     //qmlRegisterInterface<GeoElementsOverlayModel>("GeoElementsOverlayModel", 1);
-    qRegisterMetaType<GeoElementsOverlayModel>("GeoElementsOverlayModel");
+    //qmlRegisterType<GeoElementsOverlayModel>("Esri.Mapping", 1, 0, "GeoElementsOverlayModel");
+    //qRegisterMetaType<GeoElementsOverlayModel>("GeoElementsOverlayModel");
 }
 
 

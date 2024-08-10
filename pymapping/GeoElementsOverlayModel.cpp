@@ -20,8 +20,19 @@ void GeoElementsOverlayModel::init(GraphicsOverlayListModel* overlayListModel)
     m_overlayListModel = overlayListModel;
 }
 
+int GeoElementsOverlayModel::getCount() const
+{
+    return this->count();
+}
+
 int GeoElementsOverlayModel::count() const
 {
+    if (nullptr == m_overlayListModel)
+    {
+        qWarning() << "Model has no valid instance of GeoElementsOverlayModel!";
+        return -1;
+    }
+
     return m_overlayListModel->rowCount();
 }
 
@@ -30,6 +41,11 @@ QVariantList GeoElementsOverlayModel::toDict(int index) const
     QVariantList geoElements;
     if (index < 0 || this->count() <= index)
     {
+        return geoElements;
+    }
+    if (nullptr == m_overlayListModel)
+    {
+        qWarning() << "Model has no valid instance of GeoElementsOverlayModel!";
         return geoElements;
     }
 

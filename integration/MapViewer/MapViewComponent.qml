@@ -18,6 +18,10 @@ Item {
         id: bridge
     }
 
+    GeoElementsInspector {
+        id: inspector
+    }
+
     // Declare the C++ instance which creates the map etc. and supply the view
     MapViewModel {
         id: model
@@ -59,6 +63,8 @@ Item {
 
         onMapViewClicked: location => {
             console.log(location);
+            
+            // Access the GeoElementsOverlayModel
             if (0 < model.overlayModel.count) {
                 var geoelements = model.overlayModel.toDict(0);
                 for (var index=0; index<geoelements.length; index++) {
@@ -68,6 +74,9 @@ Item {
                     }
                 }
             }
+
+            // Call Python slot using the GeoElementsOverlayModel
+            inspector.inspect(model.overlayModel);
             /*
             model.clearGraphicOverlays();
             model.mapViewExtent = '{"xmin":1355768.573867436,"ymin":6764128.1390294079,"xmax":1366278.4719742704,"ymax":6772010.5626095338,"spatialReference":{"wkid":102100,"latestWkid":3857}}';

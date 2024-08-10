@@ -13,3 +13,15 @@ class Bridge(QObject):
     @Slot(str, result=str)
     def getValue(self, input):
         return f"#{input}"
+    
+@QmlElement
+class GeoElementsInspector(QObject):
+
+    @Slot(QObject)
+    def inspect(self, model):
+        if 0 < model.getCount():
+            geoelements = model.toDict(0)
+            for index in range(0, len(geoelements)):
+                geoelement = geoelements[index]
+                for key, value in geoelement.items():
+                    print(key, ":", value)
