@@ -40,6 +40,14 @@ class MapViewModel(ABC):
         :param tilePackageFilePath: The file path to the tile package (.tpk/.tpkx).
         """
 
+    def loadBasemapFromVectorTilePackage(self, vectorTilePackageFilePath: str) -> None:
+        """
+        Loads a basemap using a local vector tile cache (.vtpk/.vtpkx).
+        Represents a cache of rendered map tiles that can be used to create a layer.
+
+        :param vectorTilePackageFilePath: The file path to the tile package (.vtpk/.vtpkx).
+        """
+
     def loadBasemapFromWMTS(self, wmtsServiceUrl: str, layerIndex: int) -> None:
         """
         Loads a basemap using an Open Geospatial Consortium (OGC) Web Map Tile Service (WMTS) endpoint.

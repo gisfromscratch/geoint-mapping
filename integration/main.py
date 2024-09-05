@@ -111,6 +111,7 @@ if __name__ == "__main__":
     #mapview_model.loadMapFromMobilePackage("/mnt/data/GIS/US/Yellowstone.mmpk", 0)
     #mapview_model.loadBasemapFromWMTS("https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS", 0)
     #mapview_model.loadBasemapFromWMTS("https://sgx.geodatenzentrum.de/wmts_basemapde_schummerung", 0)
+    mapview_model.loadBasemapFromVectorTilePackage("/mnt/data/GIS/US/dodge_city.vtpk")
 
     """
     succeeded = QMetaObject.invokeMethod(mapview_model, "addGeoJsonPolygonFeatures",

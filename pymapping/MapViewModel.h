@@ -72,6 +72,7 @@ public:
     Q_INVOKABLE void updateBasemapStyle(const QString& basemapStyle);
 
     Q_INVOKABLE void loadBasemapFromTilePackage(const QString& tilePackageFilePath);
+    Q_INVOKABLE void loadBasemapFromVectorTilePackage(const QString& vectorTilePackageFilePath);
     Q_INVOKABLE void loadBasemapFromWMTS(const QString& wmtsServiceUrl, int layerIndex=0);
 
     Q_INVOKABLE void loadMapFromMobilePackage(const QString& mobileMapPackageFilePath, int mapIndex=0);

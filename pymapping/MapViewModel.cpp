@@ -31,6 +31,7 @@
 #include <QJsonObject>
 
 #include <ArcGISTiledLayer.h>
+#include <ArcGISVectorTiledLayer.h>
 #include <Basemap.h>
 #include <Error.h>
 #include <Feature.h>
@@ -258,6 +259,23 @@ void MapViewModel::loadBasemapFromTilePackage(const QString& tilePackageFilePath
 
     // Update the basemap
     Basemap* basemap = new Basemap(tiledLayer, this);
+    m_map = new Map(basemap, this);
+    m_mapView->setMap(m_map);
+    qDebug() << "Map view was updated with a new map";
+}
+
+void MapViewModel::loadBasemapFromVectorTilePackage(const QString& vectorTilePackageFilePath)
+{
+    if (!m_mapView)
+    {
+        return;
+    }
+
+    QUrl localVectorTileFileUrl = QUrl::fromLocalFile(vectorTilePackageFilePath);
+    ArcGISVectorTiledLayer* vectorTiledLayer = new ArcGISVectorTiledLayer(localVectorTileFileUrl, this);
+
+    // Update the basemap
+    Basemap* basemap = new Basemap(vectorTiledLayer, this);
     m_map = new Map(basemap, this);
     m_mapView->setMap(m_map);
     qDebug() << "Map view was updated with a new map";
